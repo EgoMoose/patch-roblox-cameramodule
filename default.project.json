@@ -1,0 +1,6 @@
+{
+	"name": "PlayerScriptsLoader",
+	"tree": {
+		"$path": "src/StarterPlayerScripts"
+	}
+}
