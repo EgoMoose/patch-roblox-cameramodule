@@ -1,0 +1,10 @@
+{
+	"name": "CameraModule-API-Public-Override",
+	"StarterPlayer": {
+		"$className": "StarterPlayer",
+		"StarterPlayerScripts": {
+			"$className": "StarterPlayerScripts",
+			"$path": "src/StarterPlayerScripts"
+		}
+	}
+}
