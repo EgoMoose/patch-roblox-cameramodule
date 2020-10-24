@@ -1,10 +1,19 @@
 {
 	"name": "CameraModule-API-Public-Override",
-	"StarterPlayer": {
-		"$className": "StarterPlayer",
-		"StarterPlayerScripts": {
-			"$className": "StarterPlayerScripts",
-			"$path": "src/StarterPlayerScripts"
+	"tree": {
+		"$className": "DataModel",
+		"HttpService": {
+			"$className": "HttpService",
+			"$properties": {
+				"HttpEnabled": true
+			}
+		},
+		"StarterPlayer": {
+			"$className": "StarterPlayer",
+			"StarterPlayerScripts": {
+				"$className": "StarterPlayerScripts",
+				"$path": "src/StarterPlayerScripts"
+			}
 		}
 	}
 }
