@@ -1,3 +1,6 @@
+-- Injects into the CameraModule to override for public API access
+-- EgoMoose
+
 local FFLAG_OVERRIDES = {
 	["UserRemoveTheCameraApi"] = false
 }
