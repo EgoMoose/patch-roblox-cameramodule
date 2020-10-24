@@ -7,7 +7,7 @@ local FFLAG_OVERRIDES = {
 local FakeUserSettings = {}
 
 function FakeUserSettings:IsUserFeatureEnabled(name)
-	if FFLAF_OVERRIDES[name] ~= nil then
+	if FFLAG_OVERRIDES[name] ~= nil then
 		return FFLAG_OVERRIDES[name]
 	end
 	return UserSettings():IsUserFeatureEnabled(name)
