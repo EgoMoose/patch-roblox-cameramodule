@@ -32,6 +32,7 @@ local TransparencyController = require(CameraModule:WaitForChild("TransparencyCo
 
 local result = nil
 local copy = TransparencyController.Enable
+local bind = Instance.new("BindableEvent")
 
 TransparencyController.Enable = function(self, ...)
 	copy(self, ...)
@@ -43,9 +44,12 @@ TransparencyController.Enable = function(self, ...)
 	TransparencyController.Enable = copy
 	
 	result = f()
+	bind.Event:Wait() -- infinite wait so no more connections can be made
 end
 
-require(CameraModule)
+coroutine.wrap(function()
+	require(CameraModule)
+end)()
 
 -- Place children under injection
 
