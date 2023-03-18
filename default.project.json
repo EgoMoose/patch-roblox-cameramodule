@@ -1,5 +1,5 @@
 {
-	"name": "patch-playermodule",
+	"name": "patch-cameramodule",
 	"tree": {
 		"$path": "src"
 	}
