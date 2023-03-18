@@ -1,0 +1,31 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ok-nick/setup-aftman@v0.3.0
+
+      - name: Build release.rbxm
+        run: rojo build --output release.rbxm
+    
+      - name: Create release
+        uses: softprops/action-gh-release@v0.1.15
+        with:
+          files: release.rbxm
+          
+      - name: Wally login
+        shell: pwsh
+        run: |
+          mkdir -p $env:USERPROFILE/.wally
+          echo '${{ secrets.WALLY_AUTH }}' > $env:USERPROFILE/.wally/auth.toml
+          
+      - name: Wally publish
+        run: wally publish
