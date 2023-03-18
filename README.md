@@ -2,6 +2,9 @@
 Module that provides access to the CameraModule API in the Roblox PlayerModule
 
 ## How to use
+* [Wally](https://wally.run/package/egomoose/patch-cameramodule)
+* [Releases](https://github.com/EgoMoose/patch-roblox-cameramodule/releases)
+
 This module returns a function that should be called on the CameraModule before PlayerModule has had a chance to run. The easiest place to do this is in the `PlayerScriptsLoader`, but this may or may not be the right place depending on the rest of your project.
 
 For example:
