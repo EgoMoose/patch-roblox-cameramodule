@@ -1,0 +1,15 @@
+{
+	"name": "patch-cameramodule",
+	"tree": {
+		"$className": "DataModel",
+		"StarterPlayer": {
+			"$className": "StarterPlayer",
+			"StarterPlayerScripts": {
+				"$className": "StarterPlayerScripts",
+				"PatchCameraModule": {
+					"$path": "src"
+				}
+			}
+		}
+	}
+}

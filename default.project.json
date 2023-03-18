@@ -1,0 +1,6 @@
+{
+	"name": "patch-playermodule",
+	"tree": {
+		"$path": "src"
+	}
+}
