@@ -1,31 +1,42 @@
 name: Release
 
 on:
+  workflow_dispatch:
   push:
-    tags:
-      - "v*.*.*"
+    tags: ["v*"]
 
 jobs:
-  windows:
-    runs-on: windows-latest
-
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v3
-      - uses: ok-nick/setup-aftman@v0.3.0
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Build release.rbxm
-        run: rojo build --output release.rbxm
-    
-      - name: Create release
-        uses: softprops/action-gh-release@v0.1.15
+      - name: Create Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release create ${{ github.ref_name }} --draft --verify-tag --title ${{ github.ref_name }}
+
+      - name: Setup rokit
+        uses: CompeyDev/setup-rokit@v0.1.2
+
+      - name: "Run wally install"
+        run: lune run wally-install
+
+      - name: Build rbxm
+        run: rojo build default.project.json --output patch-camera-module-${{ github.ref_name }}.rbxm
+
+      - name: Create Archive and Upload to Release
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload ${{ github.ref_name }} patch-camera-module-${{ github.ref_name }}.rbxm
+      
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
         with:
-          files: release.rbxm
-          
-      - name: Wally login
-        shell: pwsh
-        run: |
-          mkdir -p $env:USERPROFILE/.wally
-          echo '${{ secrets.WALLY_AUTH }}' > $env:USERPROFILE/.wally/auth.toml
-          
-      - name: Wally publish
-        run: wally publish
+          name: build
+          path: patch-camera-module-${{ github.ref_name }}.rbxm

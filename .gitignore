@@ -1,4 +1,7 @@
-wally.lock
-sourcemap.json
+/ServerPackages
+/DevPackages
+/Packages
+/placefiles
 
-/assets
+sourcemap.json
+*.ds_store

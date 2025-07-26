@@ -1,7 +1,10 @@
 [package]
 name = "egomoose/patch-cameramodule"
+description = "Patches the Roblox PlayerModule so that the camera API is accessible during runtime."
+repository = "https://github.com/EgoMoose/patch-roblox-cameramodule"
 version = "0.2.0"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
-
-[dependencies]
+license = "MIT"
+exclude = ["**"]
+include = ["src", "src/**", "wally.toml", "wally.lock", "default.project.json", "LICENSE"]
