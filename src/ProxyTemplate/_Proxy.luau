@@ -1,3 +1,5 @@
+--!strict
+
 return {
-	Value = nil,
+	value = nil,
 }
