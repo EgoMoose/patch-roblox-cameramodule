@@ -1,17 +1,26 @@
---!nonstrict
+--!strict
 
-local ProxyTemplate = script:WaitForChild("ProxyTemplate")
+local ProxyTemplate = script:WaitForChild("ProxyTemplate") :: ModuleScript
 
-local function createModuleProxy(value)
+type ProxyValue<T> = { value: T }
+
+local function unknownRequire(instance: Instance)
+	assert(instance:IsA("ModuleScript"), "The provided instance was not a ModuleScript.")
+	return require(instance) :: any
+end
+
+local function createModuleProxy<T>(value: T)
 	local proxyModule = ProxyTemplate:Clone()
-	require(proxyModule:WaitForChild("_Proxy")).Value = value
+	local proxy = unknownRequire(proxyModule:WaitForChild("_Proxy")) :: ProxyValue<T>
+	proxy.value = value
 	return proxyModule
 end
 
 local function addDescendantsProxies(parentModule, newParent)
 	for _, child in parentModule:GetChildren() do
 		if child:IsA("ModuleScript") then
-			local proxyModule = createModuleProxy(require(child))
+			local value = unknownRequire(child)
+			local proxyModule = createModuleProxy(value)
 			proxyModule.Name = child.Name
 			proxyModule.Parent = newParent
 
@@ -36,11 +45,12 @@ local function addDescendantsProxies(parentModule, newParent)
 end
 
 local function patch(CameraModule: ModuleScript)
-	local TransparencyController = require(CameraModule:WaitForChild("TransparencyController"))
+	-- stylua: ignore
+	local TransparencyController = unknownRequire(CameraModule:WaitForChild("TransparencyController")) :: { new: (...any) -> ...any }
 	local oldTransparencyControllerNew = TransparencyController.new
 
 	local result = nil
-	local bind = Instance.new("BindableEvent")
+	local thread = coroutine.running()
 
 	TransparencyController.new = function(...)
 		-- set this back its original value so it behaves as expected next time it's called
@@ -51,18 +61,23 @@ local function patch(CameraModule: ModuleScript)
 		local cameraModuleNew = debug.info(2, "f")
 		result = cameraModuleNew()
 
+		-- unblock our waiting thread
+		if coroutine.status(thread) == "suspended" then
+			task.spawn(thread)
+		end
+
+		-- local activeThread = coroutine.running()
+		-- task.defer(task.cancel, activeThread)
+
 		-- yield forever so we don't continue to leak memory
-		bind:Fire()
-		bind.Event:Wait()
+		coroutine.yield()
 	end
 
 	-- the patch has been setup, now we wait!
-	task.spawn(function()
-		require(CameraModule)
-	end)
+	task.spawn(unknownRequire, CameraModule)
 
 	while not result do
-		bind.Event:Wait()
+		coroutine.yield()
 	end
 
 	-- create a bunch of proxies so we don't actually have to move anything
