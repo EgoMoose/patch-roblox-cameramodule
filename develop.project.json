@@ -1,11 +1,11 @@
 {
-	"name": "patch-cameramodule",
+	"name": "patch-camera-module",
 	"tree": {
 		"$className": "DataModel",
-		"StarterPlayer": {
-			"$className": "StarterPlayer",
-			"StarterPlayerScripts": {
-				"$className": "StarterPlayerScripts",
+		"ReplicatedStorage": {
+			"$className": "ReplicatedStorage",
+			"Packages": {
+				"$path": "Packages",
 				"PatchCameraModule": {
 					"$path": "src"
 				}
